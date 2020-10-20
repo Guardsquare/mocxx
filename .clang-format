@@ -1,0 +1,9 @@
+BasedOnStyle: Mozilla
+
+PointerBindsToType: true
+BreakConstructorInitializersBeforeComma: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+FixNamespaceComments: true
+#BreakStringLiterals: false
+
+ColumnLimit: 80

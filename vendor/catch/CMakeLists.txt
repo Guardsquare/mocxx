@@ -1,0 +1,3 @@
+set(CATCH_INCLUDES
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  CACHE STRING "Catch includes")

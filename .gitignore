@@ -1,32 +1,96 @@
-# Prerequisites
-*.d
+build
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# CMake
+CMakeCache.txt
+CMakeLists.txt.user
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
 
-# Precompiled Headers
-*.gch
-*.pch
+# IntelliJ
+.idea
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# CLion
+cmake-build-debug
 
-# Fortran module files
-*.mod
-*.smod
+# VS Code
+.vscode
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# ccls LSP
+.ccls-cache
 
-# Executables
-*.exe
-*.out
-*.app
+# Vim
+.ycm_extra_conf.py
+.ycm_extra_conf.pyc
+tags
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+._*
+*.pkg
+
+# LIT
+tests/**/Output
+*.out.bc
+
+# Doxygen
+doxygen
+
+# Gcov
+coverage
+*.profraw
+
+#MKdocs
+site
+
+# Python
+*.pyc
+
+# Optional tools
+tools/go-tools
+
+# Optional plugins
+plugins/ixguard-plugins
+
+# Other
+extra/encryption/*.bc
+extra/encryption/*.enc
+extra/encryption/*.ll
+extra/encryption/build
+
+# Tests
+*mapping*.yml
+model.yml
+.ixguard
+*.dSYM
+
+# Log
+ixguard.log
+bitguard.log
+ixguard-resign.log
+
+#CMake generated release notes
+manual/md/about/changelog.md
+manual/md/index.md
+
+#CMake generated mkdocs config file
+manual/mkdocs.yml
+
+#Xcode <-> LLVM mapping overrides
+cmake/MappingOverrides.cmake
