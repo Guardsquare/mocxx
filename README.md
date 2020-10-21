@@ -4,7 +4,7 @@
 
 # Mocxx
 
-[![license](https://img.shields.io/badge/License-Beerware%42.0-blue.svg)](https://spdx.org/licenses/Beerware.html)
+[![license](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 ![version](https://img.shields.io/badge/version-0.1.0-g)
 
 <!-- TODO: logo -->
