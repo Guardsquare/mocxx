@@ -250,7 +250,12 @@ target_link_libraries(<test_target> PUBLIC Mocxx)
 ### Other
 
 To install without cmake you need to add `Mocxx` includes and `Frida Gum`
-includes and static library located in `vendor/frida/`.
+includes and static library located in `vendor/frida/`. Make sure you are
+compiling your tests with these flags:
+
+```
+-O0 -g -fno-inline-functions -fno-inline
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to
