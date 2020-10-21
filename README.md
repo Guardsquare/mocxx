@@ -4,7 +4,7 @@
 
 # Mocxx
 
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![license](https://img.shields.io/badge/License-Beerware%42.0-blue.svg)](https://spdx.org/licenses/Beerware.html)
 ![version](https://img.shields.io/badge/version-0.1.0-g)
 
 <!-- TODO: logo -->
