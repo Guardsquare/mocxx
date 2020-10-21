@@ -14,3 +14,7 @@ add_executable(test_mocxx ${TEST_FILES})
 target_link_libraries(test_mocxx ${FRIDA_LIBRARIES})
 
 add_test(NAME test_mocxx COMMAND test_mocxx)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  target_link_options(test_mocxx PUBLIC -lstdc++fs)
+endif()

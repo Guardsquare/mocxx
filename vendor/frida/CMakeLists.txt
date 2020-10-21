@@ -1,5 +1,5 @@
 set(FRIDA_LINKER_FLAGS
-  "-lresolv"
+  -lresolv -lpthread -ldl
   CACHE STRING "Frida gum flags")
 
 if (APPLE)

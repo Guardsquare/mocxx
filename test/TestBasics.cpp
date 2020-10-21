@@ -13,9 +13,18 @@
 #include <string>
 #include <vector>
 
+#if defined(__clang__)
 #pragma clang optimize off
 #include <filesystem>
 #pragma clang optimize on
+#elif defined(__GNUC__)
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
+#include <experimental/filesystem>
+#pragma GCC pop_options
+#else
+#error "Unknown compiler used"
+#endif
 
 using namespace mocxx;
 
@@ -319,8 +328,7 @@ TEST_CASE("Mocxx::Result()", "[Mocxx]")
   }
 }
 
-TEST_CASE("Mocxx::ResultOnce() makes replacement execute only once",
-          "[Mocxx]")
+TEST_CASE("Mocxx::ResultOnce() makes replacement execute only once", "[Mocxx]")
 {
   SECTION("works on trivials")
   {

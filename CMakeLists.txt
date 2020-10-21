@@ -24,5 +24,7 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 # Set project include dirs.
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+enable_testing(true)
+
 add_subdirectory(vendor)
 add_subdirectory(test)

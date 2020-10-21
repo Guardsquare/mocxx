@@ -2,12 +2,15 @@
   <img alt="Mocxx logo" src="https://files.tofugu.com/articles/japan/2014-04-29-japanese-coffee/header-1280x.jpg" width="400px" />
 </div>
 
+<!-- TODO: logo -->
+
 # Mocxx
 
 [![license](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 ![version](https://img.shields.io/badge/version-0.1.0-g)
-
-<!-- TODO: logo -->
+[![tests-macos-clang](https://github.com/Guardsquare/mocxx/workflows/MacOS%2FClang/badge.svg)](https://github.com/Guardsquare/mocxx/actions?query=workflow%3AMacOS%2FClang)
+[![tests-linux-clang](https://github.com/Guardsquare/mocxx/workflows/Linux%2FClang/badge.svg)](https://github.com/Guardsquare/mocxx/actions?query=workflow%3ALinux%2FClang)
+[![tests-linux-gcc](https://github.com/Guardsquare/mocxx/workflows/Linux%2FGCC/badge.svg)](https://github.com/Guardsquare/mocxx/actions?query=workflow%3ALinux%2FGCC)
 
 A versatile [C++](https://www.stroustrup.com/C++.html) function mocking
 framework. It replaces a target function with the provided implementation, and
@@ -41,7 +44,7 @@ std::string file = "/this/file/now/exists";
 // Returns true
 std::filesystem::exists(file);
 
-// Returns false
+// Returns false, because of ReplaceOnce
 std::filesystem::exists(file);
 ```
 
@@ -255,6 +258,12 @@ compiling your tests with these flags:
 
 ```
 -O0 -g -fno-inline-functions -fno-inline
+```
+
+And link with these:
+
+```
+-lresolv -lpthread -ldl
 ```
 
 ## Contributing
