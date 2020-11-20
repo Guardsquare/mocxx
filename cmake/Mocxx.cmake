@@ -9,7 +9,7 @@ FetchContent_MakeAvailable(Mocxx)
 add_library(Mocxx INTERFACE)
 target_compile_definitions(Mocxx INTERFACE ${Mocxx_DEFINITIONS})
 target_include_directories(Mocxx INTERFACE ${Mocxx_SOURCE_DIR}/include)
-target_compile_options(Mocxx INTERFACE -O0 -g -fno-inline-functions -fno-inline)
+target_compile_options(Mocxx INTERFACE -O0 -g -fno-lto -fno-inline-functions -fno-inline)
 
 # Frida Gum
 target_include_directories(Mocxx INTERFACE ${FRIDA_INCLUDES})

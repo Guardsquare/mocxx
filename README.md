@@ -148,8 +148,8 @@ mocxx.ReplaceGenerator([&]() mutable { return (notSoRandom %= 9); },
 
 As all good things, this one does have some drawbacks. One major issue you
 might encounter while using Mocxx is that your functions are not being
-replaced, this is especially true for **system**. This section will go over
-most common problems.
+replaced, this is especially true for **system functions**. This section will
+go over most common problems.
 
 ### Optimisations
 
@@ -257,7 +257,7 @@ includes and static library located in `vendor/frida/`. Make sure you are
 compiling your tests with these flags:
 
 ```
--O0 -g -fno-inline-functions -fno-inline
+-O0 -g -fno-lto -fno-inline-functions -fno-inline
 ```
 
 And link with these:
