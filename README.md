@@ -1,7 +1,3 @@
-<div align="center">
-  <img alt="Mocxx logo" src="https://files.tofugu.com/articles/japan/2014-04-29-japanese-coffee/header-1280x.jpg" width="400px" />
-</div>
-
 <!-- TODO: logo -->
 
 # Mocxx
