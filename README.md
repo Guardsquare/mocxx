@@ -12,7 +12,7 @@ A versatile [C++](https://www.stroustrup.com/C++.html) function mocking
 framework. It replaces a target function with the provided implementation, and
 integrates well with existing testing and mocking frameworks.
 
-[Article](TODO) about how it works.
+[Article](https://tech.guardsquare.com/posts/mocxx-the-mocking-tool/) about how it works.
 
 ## Features
 
