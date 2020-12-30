@@ -15,18 +15,28 @@
 
 #if defined(__clang__)
 #pragma clang optimize off
+#if __has_include(<filesystem>)
 #include <filesystem>
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+#else
+#error "Compiler doesn't support `std::filesystem`"
+#endif
 #pragma clang optimize on
 #elif defined(__GNUC__)
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
+#if __has_include(<filesystem>)
+#include <filesystem>
+#elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
+#else
+#error "Compiler doesn't support `std::filesystem`"
+#endif
 #pragma GCC pop_options
 #else
 #error "Unknown compiler used"
 #endif
-
-using namespace mocxx;
 
 std::vector<int>
 OverloadSet(std::vector<int> vector)
@@ -103,7 +113,7 @@ TEST_CASE("Mocxx follows RAII", "[Mocxx]")
           std::vector<int>{ 3, 2, 1 });
 
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.Replace(
       [](std::vector<int> a) {
@@ -127,7 +137,7 @@ TEST_CASE("Mocxx follows RAII", "[Mocxx]")
 
 TEST_CASE("Mocxx::Restore() in the replacement", "[Mocxx]")
 {
-  Mocxx mocxx;
+  mocxx::Mocxx mocxx;
 
   REQUIRE(mocxx.Replace(
     [&mocxx](int x, int y) {
@@ -146,7 +156,7 @@ TEST_CASE("Mocxx::Replace() with identical signatures", "[Mocxx]")
   REQUIRE(TrivialPlus(3, 2) == 5);
   REQUIRE(TrivialMinus(2, 1) == 1);
 
-  Mocxx mocxx;
+  mocxx::Mocxx mocxx;
 
   REQUIRE(mocxx.Replace([](int x, int y) { return x * y; }, TrivialPlus));
   REQUIRE(TrivialPlus(3, 2) == 6);
@@ -160,7 +170,7 @@ TEST_CASE("Mocxx::Replace() by name", "[Mocxx]")
 {
   REQUIRE(atof("1.0") == 1.0);
 
-  Mocxx mocxx;
+  mocxx::Mocxx mocxx;
   REQUIRE(mocxx.Replace([]() { return 0.0; }, "atof"));
 
   REQUIRE(atof("1.0") == 0.0);
@@ -173,7 +183,7 @@ TEST_CASE("Mocxx::Replace() system functions", "[Mocxx]")
 {
   SECTION("replacing open")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     std::string outFile;
     int outMode;
@@ -206,7 +216,7 @@ TEST_CASE("Mocxx::Replace() system functions", "[Mocxx]")
   {
     REQUIRE_FALSE(std::filesystem::exists("doesn't exist"));
 
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
     REQUIRE(mocxx.Replace([](const std::filesystem::path& p) { return true; },
                           std::filesystem::exists));
 
@@ -222,7 +232,7 @@ TEST_CASE("Mocxx::ReplaceMember()", "[Mocxx]")
 {
   SECTION("generating result")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.ReplaceMember(
       [](Name* foo) -> Name::size_type { return foo->name.size() + 1; },
@@ -238,7 +248,7 @@ TEST_CASE("Mocxx::ReplaceMember()", "[Mocxx]")
 
   SECTION("replacing result with lambda")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     Name result("Eastre");
     REQUIRE(mocxx.ReplaceMember(
@@ -255,7 +265,7 @@ TEST_CASE("Mocxx::ReplaceMember()", "[Mocxx]")
 
   SECTION("replacing result with mutable lambdas")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     Name result("Skadi");
     REQUIRE(mocxx.ReplaceMember(
@@ -272,7 +282,7 @@ TEST_CASE("Mocxx::ReplaceMember()", "[Mocxx]")
 
   SECTION("modifying arguments")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.ReplaceMember(
       [&mocxx](const Name* self, std::int32_t times) {
@@ -287,7 +297,7 @@ TEST_CASE("Mocxx::Result()", "[Mocxx]")
 {
   SECTION("value and target result types are trivially")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.Result(13, &TrivialPlus));
     REQUIRE(mocxx.IsReplaced(TrivialPlus));
@@ -297,7 +307,7 @@ TEST_CASE("Mocxx::Result()", "[Mocxx]")
 
   SECTION("value and target result types are const& in free function")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     const int& result = 13;
     REQUIRE(mocxx.Result(result, &ConstRefPlus));
@@ -308,7 +318,7 @@ TEST_CASE("Mocxx::Result()", "[Mocxx]")
 
   SECTION("value is trivial, result type is const& in free function")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.Result(13, &ConstRefPlus));
     REQUIRE(mocxx.IsReplaced(ConstRefPlus));
@@ -318,7 +328,7 @@ TEST_CASE("Mocxx::Result()", "[Mocxx]")
 
   SECTION("value is const&, result type is trivial in free function")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     const int& result = 13;
     REQUIRE(mocxx.Result(result, &TrivialPlus));
@@ -332,7 +342,7 @@ TEST_CASE("Mocxx::ResultOnce() makes replacement execute only once", "[Mocxx]")
 {
   SECTION("works on trivials")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.ResultOnce(13, TrivialPlus));
 
@@ -344,7 +354,7 @@ TEST_CASE("Mocxx::ResultOnce() makes replacement execute only once", "[Mocxx]")
 
   SECTION("works with references to trivial types")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     int value = 13;
     REQUIRE(mocxx.ResultOnce(value, ConstRefPlus));
@@ -358,7 +368,7 @@ TEST_CASE("Mocxx::ResultOnce() makes replacement execute only once", "[Mocxx]")
 
   SECTION("works with move only values")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.ResultOnce(std::make_unique<int>(13), UniqueInt));
 
@@ -373,7 +383,7 @@ TEST_CASE("Mocxx::ResultMember()", "[Mocxx]")
 {
   SECTION("works on & and const& types")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     Name cresult("Vidar");
     REQUIRE(mocxx.ResultMember(cresult,
@@ -394,7 +404,7 @@ TEST_CASE("Mocxx::ResultGenerator()", "[Mocxx]")
 {
   SECTION("value and target result types are trivially")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.ResultGenerator([] { return 13; }, &TrivialPlus));
     REQUIRE(mocxx.IsReplaced(TrivialPlus));
@@ -404,7 +414,7 @@ TEST_CASE("Mocxx::ResultGenerator()", "[Mocxx]")
 
   SECTION("value and target result types are const& in free function")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     const int& result = 13;
     REQUIRE(mocxx.ResultGenerator([&]() -> const int& { return result; },
@@ -416,7 +426,7 @@ TEST_CASE("Mocxx::ResultGenerator()", "[Mocxx]")
 
   SECTION("value and target result types are & in free function")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     int result = 13;
     REQUIRE(
@@ -431,7 +441,7 @@ TEST_CASE("Mocxx::ResultGeneratorMember()", "[Mocxx]")
 {
   SECTION("generator can return trivial result")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.Replace([]() mutable -> Name::size_type { return 13; },
                           &Name::static_size));
@@ -453,7 +463,7 @@ TEST_CASE("Mocxx::ResultGeneratorMember()", "[Mocxx]")
 
   SECTION("generator can return trivial result")
   {
-    Mocxx mocxx;
+    mocxx::Mocxx mocxx;
 
     REQUIRE(mocxx.Replace([]() mutable -> Name::size_type { return 13; },
                           &Name::static_size));
