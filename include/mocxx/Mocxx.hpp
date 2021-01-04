@@ -6,6 +6,7 @@
 // stl
 #include <experimental/type_traits>
 #include <functional>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <variant>
