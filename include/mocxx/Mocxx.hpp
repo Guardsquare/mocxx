@@ -256,7 +256,7 @@ public:
   {
     auto* context = gum_interceptor_get_current_invocation();
     const auto* target =
-      gum_invocation_context_get_replacement_function_data(context);
+      gum_invocation_context_get_replacement_data(context);
     return Replacements.at(target)(std::forward<Args>(args)...);
   }
 
@@ -381,7 +381,7 @@ public:
       mReplacements.erase(repl);
 
       gum_interceptor_begin_transaction(mInterceptor);
-      gum_interceptor_revert_function(
+      gum_interceptor_revert(
         /*   self */ mInterceptor,
         /* target */ targetPtr);
       gum_interceptor_end_transaction(mInterceptor);
@@ -427,7 +427,7 @@ public:
                                   std::forward<Replacement>(replacement)));
 
     gum_interceptor_begin_transaction(mInterceptor);
-    gum_interceptor_replace_function(
+    gum_interceptor_replace(
       /*        self */ mInterceptor,
       /*      target */ targetPtr,
       /* replacement */
