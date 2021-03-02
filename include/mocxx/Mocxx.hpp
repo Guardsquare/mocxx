@@ -605,26 +605,26 @@ public:
   /// \param target A target to replace.
   ///
   /// \returns \a true if replacement was successful, \a false otherwise.
-  template<typename ResultGenerator,
+  template<typename Generator,
            typename TargetResult,
            typename... TargetArgs>
-  bool ResultGenerator(ResultGenerator&& generator,
+  bool ResultGenerator(Generator&& generator,
                        TargetResult (*target)(TargetArgs...))
   {
-    static_assert(std::is_same_v<details::LambdaParameters<ResultGenerator>,
+    static_assert(std::is_same_v<details::LambdaParameters<Generator>,
                                  details::EmptyList>,
                   "Result generator lambda must not accept any arguments");
 
-    using ResultValue = details::LambdaResult<ResultGenerator>;
+    using ResultValue = details::LambdaResult<Generator>;
 
     static_assert(
       std::is_convertible_v<ResultValue, TargetResult>,
       "Target result value must be convertible to the target's result type.");
 
     return Replace(
-      [capture = details::Capture(std::forward<ResultGenerator>(generator))](
+      [capture = details::Capture(std::forward<Generator>(generator))](
         TargetArgs... /* unused */) -> TargetResult {
-        return std::get<ResultGenerator>(*capture)();
+        return std::get<Generator>(*capture)();
       },
       target);
   }
@@ -632,24 +632,24 @@ public:
   /// Replace a \p target free function result with \p value of type
   /// ResultConstructor.
   ///
-  /// \tparam ResultConstructor A constructor accepting to arguments. The type
+  /// \tparam Constructor A constructor accepting to arguments. The type
   /// must be convertible to \p TargetResult.
   ///
   /// \param target A target to replace.
   ///
   /// \returns \a true if replacement was successful, \a false otherwise.
-  template<typename ResultConstructor,
+  template<typename Constructor,
            typename TargetResult,
            typename... TargetArgs>
   bool ResultConstructor(TargetResult (*target)(TargetArgs...))
   {
     static_assert(
-      std::is_convertible_v<ResultConstructor, TargetResult>,
+      std::is_convertible_v<Constructor, TargetResult>,
       "Target result value must be convertible to the target's result type.");
 
     return Replace(
       [](TargetArgs... /* unused */) -> TargetResult {
-        return ResultConstructor();
+        return Constructor();
       },
       target);
   }
