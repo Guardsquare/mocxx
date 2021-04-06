@@ -1,4 +1,6 @@
+if(NOT WIN32)
 add_compile_options(-O0 -g -fno-inline-functions -fno-inline)
+endif()
 
 file(GLOB_RECURSE TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 

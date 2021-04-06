@@ -94,3 +94,24 @@ manual/mkdocs.yml
 
 #Xcode <-> LLVM mapping overrides
 cmake/MappingOverrides.cmake
+
+#MSVC
+*.suo
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.VC.opendb
+*.ipch
+*.vcxproj.user
+*.vcxproj.FileListAbsolute.txt
+*.obj
+*.log
+*.exe
+*.lib
+*.pdb
+*.exe.recipe
+*.exp
+*.ilk
+*.tlog
+*.idb
+

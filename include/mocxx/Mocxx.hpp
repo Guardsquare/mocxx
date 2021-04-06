@@ -4,10 +4,10 @@
 #include <frida/frida-gum.h>
 
 // stl
-#include <experimental/type_traits>
 #include <functional>
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 #include <variant>
 
@@ -60,13 +60,55 @@ constexpr auto InvocableToTypeListImpl(ResultType (ClassType::*)(Args...))
 template<typename T>
 using TypeCallOperator = decltype(&T::operator());
 
+struct nonesuch
+{
+  nonesuch() = delete;
+  ~nonesuch() = delete;
+  nonesuch(nonesuch const&) = delete;
+  void operator=(nonesuch const&) = delete;
+};
+namespace detail {
+template<class Default,
+         class AlwaysVoid,
+         template<class...>
+         class Op,
+         class... Args>
+struct detector
+{
+  using value_t = std::false_type;
+  using type = Default;
+};
+
+template<class Default, template<class...> class Op, class... Args>
+struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
+{
+  using value_t = std::true_type;
+  using type = Op<Args...>;
+};
+
+} // namespace detail
+
+template<template<class...> class Op, class... Args>
+using is_detected =
+  typename detail::detector<nonesuch, void, Op, Args...>::value_t;
+
+template<template<class...> class Op, class... Args>
+using detected_t = typename detail::detector<nonesuch, void, Op, Args...>::type;
+
+template<class Default, template<class...> class Op, class... Args>
+using detected_or = detail::detector<Default, void, Op, Args...>;
+
+template<class Default, template<class...> class Op, class... Args>
+using detected_or_t =
+  typename detail::detector<Default, void, Op, Args...>::type;
+
 template<typename FunctionType>
 using InvocableToTypeList = decltype(InvocableToTypeListImpl(
   std::conditional_t<
     /*   if */ std::is_member_function_pointer_v<FunctionType>,
     /* then */ FunctionType,
     /* else */
-    std::experimental::detected_or_t<
+    detected_or_t<
       /*   default */ FunctionType,
       /*  operator */ TypeCallOperator,
       /* arguments */ FunctionType>>(nullptr)));

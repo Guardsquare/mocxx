@@ -4,12 +4,15 @@
 
 // std
 #include <fcntl.h>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 // stl
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -22,6 +25,8 @@
 #pragma GCC optimize ("O0")
 #include <experimental/filesystem>
 #pragma GCC pop_options
+#elif defined(_WIN32)
+#include <filesystem>
 #else
 #error "Unknown compiler used"
 #endif
@@ -156,6 +161,7 @@ TEST_CASE("Mocxx::Replace() with identical signatures", "[Mocxx]")
   REQUIRE(TrivialPlus(3, 2) == 6);
 }
 
+#ifndef _WIN32
 TEST_CASE("Mocxx::Replace() by name", "[Mocxx]")
 {
   REQUIRE(atof("1.0") == 1.0);
@@ -168,9 +174,11 @@ TEST_CASE("Mocxx::Replace() by name", "[Mocxx]")
   REQUIRE(mocxx.Restore("atof"));
   REQUIRE(atof("1.0") == 1.0);
 }
+#endif
 
 TEST_CASE("Mocxx::Replace() system functions", "[Mocxx]")
 {
+#ifndef _WIN32
   SECTION("replacing open")
   {
     Mocxx mocxx;
@@ -201,6 +209,7 @@ TEST_CASE("Mocxx::Replace() system functions", "[Mocxx]")
     file = open("/etc/hosts", O_RDONLY);
     REQUIRE(file == 0);
   }
+#endif
 
   SECTION("replacing std::filesystem")
   {
@@ -220,6 +229,7 @@ TEST_CASE("Mocxx::Replace() system functions", "[Mocxx]")
 
 TEST_CASE("Mocxx::ReplaceMember()", "[Mocxx]")
 {
+#if !defined(_WIN32) || defined(_WIN64)
   SECTION("generating result")
   {
     Mocxx mocxx;
@@ -235,6 +245,7 @@ TEST_CASE("Mocxx::ReplaceMember()", "[Mocxx]")
     REQUIRE(Name{}.size() == 1);
     REQUIRE(ConstName{}.size() == 2);
   }
+  #endif
 
   SECTION("replacing result with lambda")
   {
