@@ -13,7 +13,7 @@ add_link_options(${FRIDA_LINKER_FLAGS})
 
 add_executable(test_mocxx ${TEST_FILES})
 
-target_link_libraries(test_mocxx ${FRIDA_LIBRARIES})
+target_link_libraries(test_mocxx ${FRIDA_LIBRARIES} stdc++fs)
 
 add_test(NAME test_mocxx COMMAND test_mocxx)
 
