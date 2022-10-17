@@ -5,11 +5,15 @@ if(NOT WIN32)
 endif()
 
 if (APPLE)
+  set(ARCHITECTURE_PATH x86_64 )
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
+    set(ARCHITECTURE_PATH arm64 )
+  endif()
   set(FRIDA_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/macos/include
     CACHE STRING "Frida gum includes")
   set(FRIDA_LIBRARIES
-    "${CMAKE_CURRENT_SOURCE_DIR}/macos/lib/libfrida-gum.a"
+    "${CMAKE_CURRENT_SOURCE_DIR}/macos/${ARCHITECTURE_PATH}/libfrida-gum.a"
     CACHE STRING "Frida gum library")
 
 elseif(WIN32)
